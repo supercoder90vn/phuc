@@ -135,32 +135,33 @@
         };
     }
 
-    // override native console
-    // for (var attr in window.console) {
-    //     if (window.console.hasOwnProperty(attr)) {
-    //         nativeConsole[attr] = window.console[attr];
-    //         switch (attr) {
-    //             case 'clear':
-    //                 window.console['clear'] = function clear() {
-    //                     if (document.body) {
-    //                         document.body.innerHtml = null;
-    //                     }
-    //                     nativeConsole.clear.call(nativeConsole);
-    //                 };;
-    //                 break;
-    //             case 'error':
-    //                 window.console['error'] = virtualConsoleFactory('error', '#ff0000');
-    //                 break;
-    //             default:
-    //                 window.console[attr] = virtualConsoleFactory(attr);
-    //         }
-    //     }
-    // }
+    // override native console2
+    window.console2 = {}
+    for (var attr in window.console2) {
+        if (window.console2.hasOwnProperty(attr)) {
+            nativeConsole[attr] = window.console2[attr];
+            switch (attr) {
+                case 'clear':
+                    window.console2['clear'] = function clear() {
+                        if (document.body) {
+                            document.body.innerHtml = null;
+                        }
+                        nativeConsole.clear.call(nativeConsole);
+                    };;
+                    break;
+                case 'error':
+                    window.console2['error'] = virtualConsoleFactory('error', '#ff0000');
+                    break;
+                default:
+                    window.console2[attr] = virtualConsoleFactory(attr);
+            }
+        }
+    }
 
     // to catch error event
     window.addEventListener('error', function(e) {
         e.preventDefault();
-        console.error(e.message);
+        console2.error(e.message);
         return true;
     }, true);
 })();
