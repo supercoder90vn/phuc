@@ -124,7 +124,7 @@
     function virtualConsoleFactory(key, color) {
         return function() {
             // Reflect.apply -> Function.prototype.apply.call
-           // Function.prototype.apply.call(nativeConsole[key], nativeConsole, arguments);
+            Function.prototype.apply.call(nativeConsole[key], nativeConsole, arguments);
             // Array.from -> Array.prototype.slice.call
             var args = Array.prototype.slice.call(arguments)
                 .map(function (arg) {
@@ -136,26 +136,26 @@
     }
 
     // override native console
-    for (var attr in window.console) {
-        if (window.console.hasOwnProperty(attr)) {
-            nativeConsole[attr] = window.console[attr];
-            switch (attr) {
-                case 'clear':
-                    window.console['clear'] = function clear() {
-                        if (document.body) {
-                            document.body.innerHtml = null;
-                        }
-                        nativeConsole.clear.call(nativeConsole);
-                    };;
-                    break;
-                case 'error':
-                    window.console['error'] = virtualConsoleFactory('error', '#ff0000');
-                    break;
-                default:
-                    window.console[attr] = virtualConsoleFactory(attr);
-            }
-        }
-    }
+    // for (var attr in window.console) {
+    //     if (window.console.hasOwnProperty(attr)) {
+    //         nativeConsole[attr] = window.console[attr];
+    //         switch (attr) {
+    //             case 'clear':
+    //                 window.console['clear'] = function clear() {
+    //                     if (document.body) {
+    //                         document.body.innerHtml = null;
+    //                     }
+    //                     nativeConsole.clear.call(nativeConsole);
+    //                 };;
+    //                 break;
+    //             case 'error':
+    //                 window.console['error'] = virtualConsoleFactory('error', '#ff0000');
+    //                 break;
+    //             default:
+    //                 window.console[attr] = virtualConsoleFactory(attr);
+    //         }
+    //     }
+    // }
 
     // to catch error event
     window.addEventListener('error', function(e) {
