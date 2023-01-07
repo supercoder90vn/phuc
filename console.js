@@ -124,7 +124,7 @@
     function virtualConsoleFactory(key, color) {
         return function() {
             // Reflect.apply -> Function.prototype.apply.call
-            Function.prototype.apply.call(nativeConsole[key], nativeConsole, arguments);
+           // Function.prototype.apply.call(nativeConsole[key], nativeConsole, arguments);
             // Array.from -> Array.prototype.slice.call
             var args = Array.prototype.slice.call(arguments)
                 .map(function (arg) {
