@@ -137,7 +137,7 @@
 
     // override native console2
     window.console2 = {}
-    for (var attr in window.console2) {
+    for (var attr in window.console) {
         if (window.console2.hasOwnProperty(attr)) {
             nativeConsole[attr] = window.console2[attr];
             switch (attr) {
