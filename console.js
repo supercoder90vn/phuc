@@ -136,32 +136,14 @@
     }
 
     // override native console2
-    window.console2 = {}
-    for (var attr in window.console) {
-        if (window.console2.hasOwnProperty(attr)) {
-            nativeConsole[attr] = window.console2[attr];
-            switch (attr) {
-                case 'clear':
-                    window.console2['clear'] = function clear() {
-                        if (document.body) {
-                            document.body.innerHtml = null;
-                        }
-                        nativeConsole.clear.call(nativeConsole);
-                    };;
-                    break;
-                case 'error':
-                    window.console2['error'] = virtualConsoleFactory('error', '#ff0000');
-                    break;
-                default:
-                    window.console2[attr] = virtualConsoleFactory(attr);
-            }
+    window.console2 = {
+        log: function (){
+            var args = Array.prototype.slice.call(arguments)
+                .map(function (arg) {
+                    return stringify(arg);
+                })
+                .join(', ');
+            appendElement(createElement(args, color));
         }
     }
-
-    // to catch error event
-    window.addEventListener('error', function(e) {
-        e.preventDefault();
-        console2.error(e.message);
-        return true;
-    }, true);
 })();
